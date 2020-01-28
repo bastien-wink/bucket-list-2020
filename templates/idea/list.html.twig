@@ -5,7 +5,7 @@
 
     <ul>
         {% for idea in ideas %}
-            <li>{{ idea | capitalize }}</li>
+            <li>{{ idea | capitalize }} <a href="{{ path("detail") }}">(voir)</a> </li>
         {% endfor %}
     </ul>
 {% endblock %}
