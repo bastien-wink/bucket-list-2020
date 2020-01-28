@@ -6,39 +6,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/website")
+ * @Route("/idea")
  */
-class MainController extends AbstractController
+class IdeaController extends AbstractController
 {
     /**
-     * @Route("/main", name="main")
+     * @Route("/list", name="list")
      */
-    public function index()
+    public function list()
     {
-        return $this->render("main/index.html.twig",
+        $ideas = [
+            'Manger avec pierre',
+            'Manger avec paul',
+            'Manger avec jack'
+        ];
+
+        return $this->render("idea/list.html.twig",
             [
-                "joueurs" => ['pierre', 'paul', 'jack'],
-                "dateDuJour" => new \DateTime(),
+                "ideas" => $ideas
             ]
         );
     }
 
     /**
-     * @Route("/fr/website/about/faq", name="faq")
+     * @Route("/detail/", name="detail")
      */
-    public function faq()
+    public function detail()
     {
-        $questions = [
-            '<strong>So perhaps,</strong> you\'ve generated some fancy text, and you\'re content that you can now copy and paste ',
-            'fancy text in the comments section of funny cat video',
-            'Well, the answer is actually no - rather than generating ',
-            'Amongst the hundreds of thousands of symbols which are in the unicode text specification'
-        ];
+        $idea = 'Manger avec pierre';
 
-        dump($questions);
-
-        return $this->render('main/faq.html.twig',
-            ["questions" => $questions]
+        return $this->render("idea/detail.html.twig",
+            [
+                "idea" => $idea
+            ]
         );
     }
+
+
 }

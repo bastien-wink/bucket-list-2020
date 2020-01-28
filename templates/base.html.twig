@@ -15,15 +15,12 @@
     </head>
     <body>
 
-        <lu>
-            <li><a href="{{ path('main') }}">Main page</a></li>
-            <li><a href="{{ path('faq') }}">FAQ page</a></li>
+        <lu class="list-group">
+            <li class="list-group-item"><a href="{{ path('main') }}">Main page</a></li>
+            <li class="list-group-item"><a href="{{ path('faq') }}">FAQ page</a></li>
+            <li class="list-group-item"><a href="{{ path('list') }}">Idea list</a></li>
         </lu>
 
-        {% block body %}
-
-            Body par default (qui ne s'affichera normalement pas)
-
-        {% endblock %}
+        {% block body %}{% endblock %}
     </body>
 </html>

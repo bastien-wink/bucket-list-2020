@@ -3,10 +3,6 @@
 {% block body %}
     <h1>List !</h1>
 
-    <ul>
-        {% for idea in ideas %}
-            <li>{{ idea | capitalize }}</li>
-        {% endfor %}
-    </ul>
+    <div class="alert alert-primary">{{ idea | capitalize }}</div>
 {% endblock %}
 
