@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% for question in questions %}
+        <p>{{ question | raw }}</p>
+        <hr/>
+    {% endfor %}
+
+{% endblock %}
+

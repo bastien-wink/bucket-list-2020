@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ dateDuJour | date('d/m/Y') }}</h1>
+
+    <ul>
+        {% for joueur in joueurs %}
+            <li>Hello {{ joueur | upper }} !!!</li>
+        {% endfor %}
+
+    </ul>
+{% endblock %}
+
