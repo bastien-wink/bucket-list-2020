@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,12 +12,37 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main")
      */
-    public function index()
+    public function index(EntityManagerInterface $em)
     {
+        // Ancienne methode :
+        //$em = $this->getDoctrine()->getManager();
+
+        // Persist
+
+//        $book = new Book();
+//        $book->setTitle("Mémoire vives");
+//        $book->setAuthor("Snowden");
+//        $book->setPages(321);
+//        $book->setLanguage("FR");
+//        $em->persist($book);
+//        $em->flush();
+
+        // Exercise "selection"
+
+        $bookRepository = $em->getRepository(Book::class);
+
+//        $books = $bookRepository->findAll();
+//        dump($books);
+
+        //$book = $bookRepository->find(2);
+        //dump($book);
+
+        //$book = $bookRepository->findBookLess300Pages();
+
+
         return $this->render("main/index.html.twig",
             [
                 "joueurs" => ['pierre', 'paul', 'jack'],
-                "dateDuJour" => new \DateTime(),
             ]
         );
     }
