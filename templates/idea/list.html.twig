@@ -1,12 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>List !</h1>
+    <h3>Idea list :</h3>
 
-    <ul>
+    <form method="GET" >
+        <input type="text" name="search" placeholder="Recherche"/>
+    </form>
+    
+    <table class="table table-striped">
+        <tr>
+            <th><a href="{{ path('list_ordered', {'orderParam': 'title'}) }}">Titre</a></th>
+            <th><a href="{{ path('list_ordered', {'orderParam': 'dateCreated'}) }}">Crée le</a></th>
+        </tr>
         {% for idea in ideas %}
-            <li>{{ idea | capitalize }} <a href="{{ path("detail") }}">(voir)</a> </li>
+            <tr>
+                <td>
+                    <a href="{{ path('detail', {'id':idea.id}) }}">{{ idea.title }}</a>
+                </td>
+                <td>
+                    {# https://twig.symfony.com/doc/2.x/functions/date.html #}
+                    {% if idea.dateCreated > date('-1day') %}
+                        <strong>{{ idea.dateCreated | date('d/m/Y') }}</strong>
+                    {% else %}
+                        {{ idea.dateCreated | date('d/m/Y') }}
+                    {% endif %}
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
-{% endblock %}
+    </table>
 
+
+{% endblock %}

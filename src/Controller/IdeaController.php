@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Idea;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -11,17 +14,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class IdeaController extends AbstractController
 {
     /**
+     * @Route("/list/by/{orderParam}", name="list_ordered")
      * @Route("/list", name="list")
      */
-    public function list()
+    public function list(EntityManagerInterface $em, Request $request, $orderParam = 'id')
     {
-        $ideas = [
-            'Manger avec pierre',
-            'Manger avec paul',
-            'Manger avec jack'
-        ];
+        $search = $request->get('search');
 
-        return $this->render("idea/list.html.twig",
+        $ideas = $em->getRepository(Idea::class)->search($search, $orderParam);
+        //$ideas = $em->getRepository(Idea::class)->findBy(['isPublished' => true], [$orderParam => 'ASC']);
+
+        return $this->render(
+            "idea/list.html.twig",
             [
                 "ideas" => $ideas
             ]
@@ -29,18 +33,35 @@ class IdeaController extends AbstractController
     }
 
     /**
-     * @Route("/detail/", name="detail")
+     * @Route("/list_recent", name="list_recent")
      */
-    public function detail()
+    public function listRecent(EntityManagerInterface $em, $orderParam = 'id')
     {
-        $idea = 'Manger avec pierre';
+        $ideas = $em->getRepository(Idea::class)
+            ->findRecent();
+        //    ->findBy(['isPublished' => true], [$orderParam => 'ASC']);
 
-        return $this->render("idea/detail.html.twig",
+        return $this->render(
+            "idea/list.html.twig",
             [
-                "idea" => $idea
+                "ideas" => $ideas
             ]
         );
     }
 
 
+    /**
+     * @Route("/detail/{id}", name="detail")
+     */
+    public function detail($id = null, EntityManagerInterface $em)
+    {
+        $idea = $em->getRepository(Idea::class)->find($id);
+
+        return $this->render(
+            "idea/detail.html.twig",
+            [
+                "idea" => $idea
+            ]
+        );
+    }
 }
