@@ -21,6 +21,13 @@
             <li class="list-group-item"><a href="{{ path('list') }}">Idea list</a></li>
         </lu>
 
+        {# Affichage des Flashes #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div>{{ label }} : {{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -6,6 +6,7 @@ use App\Entity\Book;
 use App\Form\BookType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -13,11 +14,24 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main")
      */
-    public function index(EntityManagerInterface $em)
+    public function index(EntityManagerInterface $em, Request $request)
     {
         $newBook = new Book();
 
         $form = $this->createForm(BookType::class, $newBook);
+
+        // Traitement du formulaire
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $em->persist($newBook);
+            $em->flush();
+
+            $this->addFlash("success", "Book created !!");
+
+        }
+
 
         return $this->render(
             "main/index.html.twig",
