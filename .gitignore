@@ -52,3 +52,4 @@
 /.web-server-pid
 
 /.idea/
+.php_cs_cache
