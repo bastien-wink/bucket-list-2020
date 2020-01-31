@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Idea;
+use App\Form\IdeaType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +14,52 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IdeaController extends AbstractController
 {
+    /**
+     * @Route("/new", name="new")
+     */
+    public function new(Request $request, EntityManagerInterface $em)
+    {
+        $idea = new Idea();
+        $form = $this->createForm(IdeaType::class, $idea);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $idea->setIsPublished(true);
+            $idea->setDateCreated(new \DateTime());
+
+            $em->persist($idea);
+            $em->flush();
+
+            $this->addFlash('success', 'Idea created');
+
+            return $this->redirectToRoute('list');
+        }
+
+        return $this->render(
+            "idea/form.html.twig",
+            [
+                "ideaForm" => $form->createView()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/detail/{id}", name="detail")
+     */
+    public function detail($id = null, EntityManagerInterface $em)
+    {
+        $idea = $em->getRepository(Idea::class)->find($id);
+
+        return $this->render(
+            "idea/detail.html.twig",
+            [
+                "idea" => $idea
+            ]
+        );
+    }
+
     /**
      * @Route("/list/by/{orderParam}", name="list_ordered")
      * @Route("/list", name="list")
@@ -41,26 +88,11 @@ class IdeaController extends AbstractController
             ->findRecent();
         //    ->findBy(['isPublished' => true], [$orderParam => 'ASC']);
 
+
         return $this->render(
             "idea/list.html.twig",
             [
                 "ideas" => $ideas
-            ]
-        );
-    }
-
-
-    /**
-     * @Route("/detail/{id}", name="detail")
-     */
-    public function detail($id = null, EntityManagerInterface $em)
-    {
-        $idea = $em->getRepository(Idea::class)->find($id);
-
-        return $this->render(
-            "idea/detail.html.twig",
-            [
-                "idea" => $idea
             ]
         );
     }

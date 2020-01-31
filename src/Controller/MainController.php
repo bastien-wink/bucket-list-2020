@@ -18,12 +18,12 @@ class MainController extends AbstractController
     {
         $newBook = new Book();
 
-        $form = $this->createForm(BookType::class, $newBook);
+        $ideaForm = $this->createForm(BookType::class, $newBook);
 
         // Traitement du formulaire
-        $form->handleRequest($request);
+        $ideaForm->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if($ideaForm->isSubmitted() && $ideaForm->isValid()){
 
             $em->persist($newBook);
             $em->flush();
@@ -36,7 +36,7 @@ class MainController extends AbstractController
         return $this->render(
             "main/index.html.twig",
             [
-                "bookForm" => $form->createView()
+                "bookForm" => $ideaForm->createView()
             ]
         );
     }

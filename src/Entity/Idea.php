@@ -75,13 +75,6 @@ class Idea
         return $this->author;
     }
 
-    public function setAuthor(?string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
     public function getIsPublished(): ?bool
     {
         return $this->isPublished;
@@ -103,6 +96,12 @@ class Idea
     {
         $this->dateCreated = $dateCreated;
 
+        return $this;
+    }
+
+    public function setAuthor($author): Idea
+    {
+        $this->author = $author;
         return $this;
     }
 }
