@@ -41,6 +41,11 @@ class Idea
      */
     private $dateCreated;
 
+    /**
+     * @ORM\Column(type="date", nullable=false, options={"default"= "2020-12-31"})
+     */
+    private $dateDeadline;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,18 @@ class Idea
     public function setAuthor($author): Idea
     {
         $this->author = $author;
+        return $this;
+    }
+
+    public function getDateDeadline(): ?\DateTimeInterface
+    {
+        return $this->dateDeadline;
+    }
+
+    public function setDateDeadline(?\DateTimeInterface $dateDeadline): self
+    {
+        $this->dateDeadline = $dateDeadline;
+
         return $this;
     }
 }

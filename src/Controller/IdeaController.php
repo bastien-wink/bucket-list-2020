@@ -15,24 +15,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class IdeaController extends AbstractController
 {
     /**
-     * @Route("/new", name="new")
+     * @Route("/form/{id}", name="edit")
      */
-    public function new(Request $request, EntityManagerInterface $em)
+    public function edit($id = null, EntityManagerInterface $em, Request $request)
     {
-        $idea = new Idea();
-        $form = $this->createForm(IdeaType::class, $idea);
 
+        if ($id == null) {
+            $idea = new Idea();
+        } else {
+            $idea = $em->getRepository(Idea::class)->find($id);
+        }
+
+        $form = $this->createForm(IdeaType::class, $idea);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $idea->setIsPublished(true);
-            $idea->setDateCreated(new \DateTime());
+            if ($id == null) {
+                $idea->setDateCreated(new \DateTime());
+                $em->persist();
+                $this->addFlash('success', 'Idea Created');
+            } else {
+                $this->addFlash('success', 'Idea Updated');
+            }
 
-            $em->persist($idea);
             $em->flush();
-
-            $this->addFlash('success', 'Idea created');
 
             return $this->redirectToRoute('list');
         }
