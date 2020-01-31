@@ -14,10 +14,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IdeaController extends AbstractController
 {
+
     /**
-     * @Route("/form/{id}", name="edit")
+     * @Route("/delete/{id}", name="delete")
      */
-    public function edit($id = null, EntityManagerInterface $em, Request $request)
+    public function delete($id = null, EntityManagerInterface $em, Request $request)
+    {
+        $idea = $em->getRepository(Idea::class)->find($id);
+        $em->remove($idea);
+        $em->flush();
+        $this->addFlash('success', 'Idea Deleted');
+        return $this->redirectToRoute('list');
+    }
+
+    /**
+     * @Route("/form/{id}", name="form")
+     */
+    public function form($id = null, EntityManagerInterface $em, Request $request)
     {
 
         if ($id == null) {

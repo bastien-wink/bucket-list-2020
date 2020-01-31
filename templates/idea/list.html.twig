@@ -3,7 +3,7 @@
 {% block body %}
     <h3>Idea list :</h3>
 
-    <form method="GET" >
+    <form method="GET">
         <input type="text" name="search" placeholder="Recherche"/>
     </form>
 
@@ -11,6 +11,7 @@
         <tr>
             <th><a href="{{ path('list_ordered', {'orderParam': 'title'}) }}">Titre</a></th>
             <th><a href="{{ path('list_ordered', {'orderParam': 'dateCreated'}) }}">Crée le</a></th>
+            <th></th>
         </tr>
         {% for idea in ideas %}
             <tr>
@@ -24,6 +25,15 @@
                     {% else %}
                         {{ idea.dateCreated | date('d/m/Y') }}
                     {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('form', {'id':idea.id}) }}">Edit</a><br/>
+                    <a href="{{ path('delete', {'id':idea.id}) }}">Delete (avec des redirection)</a><br/>
+
+
+                    <a href="#" onclick="$.ajax('{{ path('delete', {'id':idea.id}) }}').done(function(){location.reload()}); ">Delete (mais en AJAX)</a>
+
+
                 </td>
             </tr>
         {% endfor %}
