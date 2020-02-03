@@ -43,6 +43,25 @@ class Book
      */
     private $datePublished;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Product")
+     */
+    private $product;
+
+    /**
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\Library",
+     *     inversedBy="books",
+     *     cascade={"persist"}
+     * )
+     */
+    private $library;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     */
+    private $categories;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,5 +129,59 @@ class Book
     public function setLanguage($language): void
     {
         $this->language = $language;
+    }
+
+    /**
+     * @param mixed $product
+     * @return Book
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param mixed $library
+     * @return Book
+     */
+    public function setLibrary($library)
+    {
+        $this->library = $library;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLibrary()
+    {
+        return $this->library;
+    }
+
+    /**
+     * @param mixed $categories
+     * @return Book
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
