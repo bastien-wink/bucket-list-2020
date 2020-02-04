@@ -25,6 +25,7 @@ class Category
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="category")
+     * Cas possible cascade={"remove"}
      */
     private $ideas;
 

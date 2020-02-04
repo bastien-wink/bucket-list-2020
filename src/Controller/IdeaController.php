@@ -16,6 +16,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class IdeaController extends AbstractController
 {
     /**
+     * @Route("deleteCategory/{id}", name="deleteCategory")
+     */
+    function deleteCategory($id, EntityManagerInterface $em){
+        $category = $em->getRepository(Category::class)->find($id);
+
+        $this->addFlash("Categorie ".$category->getName()." supprimé");
+
+        $em->remove($category);
+        $em->flush();
+
+
+        return $this->redirectToRoute("categoryList");
+    }
+
+
+    /**
      * @Route("/categoryList", name="categoryList")
      */
     public function categoryList(EntityManagerInterface $em, Request $request)

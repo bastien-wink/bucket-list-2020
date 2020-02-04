@@ -43,6 +43,7 @@ class Idea
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="ideas")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $category;
 
