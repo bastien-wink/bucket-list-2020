@@ -21,7 +21,7 @@ class IdeaController extends AbstractController
     function deleteCategory($id, EntityManagerInterface $em){
         $category = $em->getRepository(Category::class)->find($id);
 
-        $this->addFlash("Categorie ".$category->getName()." supprimé");
+        $this->addFlash("success", "Categorie ".$category->getName()." supprimé");
 
         $em->remove($category);
         $em->flush();

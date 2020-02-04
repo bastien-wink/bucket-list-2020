@@ -20,7 +20,9 @@
                     <a href="{{ path('detail', {'id':idea.id}) }}">{{ idea.title }}</a>
                 </td>
                 <td>
-                    {{ idea.category.name }}
+                    {% if idea.category is not null %}
+                        {{ idea.category.name }}
+                    {% endif %}
                     {#{{ idea.getCategory().getName() }}#}
                 </td>
                 <td>
@@ -36,7 +38,9 @@
                     <a href="{{ path('delete', {'id':idea.id}) }}">Delete (avec des redirection)</a><br/>
 
 
-                    <a href="#" onclick="$.ajax('{{ path('delete', {'id':idea.id}) }}').done(function(){location.reload()}); ">Delete (mais en AJAX)</a>
+                    <a href="#"
+                       onclick="$.ajax('{{ path('delete', {'id':idea.id}) }}').done(function(){location.reload()}); ">Delete
+                        (mais en AJAX)</a>
 
 
                 </td>
