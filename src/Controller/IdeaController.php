@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Idea;
 use App\Form\IdeaType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,74 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IdeaController extends AbstractController
 {
+    /**
+     * @Route("/categoryList", name="categoryList")
+     */
+    public function categoryList(EntityManagerInterface $em, Request $request)
+    {
+        $categories = $em->getRepository(Category::class)->findBy([], ['name' => 'ASC']);
+
+        return $this->render(
+            "idea/categoryList.html.twig",
+            [
+                "categories" => $categories
+            ]
+        );
+    }
+
+    /**
+     * @Route("/list/by/{orderParam}", name="list_ordered")
+     * @Route("/list", name="list")
+     */
+    public function list(EntityManagerInterface $em, Request $request, $orderParam = 'id')
+    {
+        $search = $request->get('search');
+
+        $ideas = $em->getRepository(Idea::class)->search($search, $orderParam);
+        //$ideas = $em->getRepository(Idea::class)->findBy(['isPublished' => true], [$orderParam => 'ASC']);
+
+        return $this->render(
+            "idea/list.html.twig",
+            [
+                "ideas" => $ideas
+            ]
+        );
+    }
+
+
+    /**
+     * @Route("/detail/{id}", name="detail")
+     */
+    public function detail($id = null, EntityManagerInterface $em)
+    {
+        $idea = $em->getRepository(Idea::class)->find($id);
+
+        return $this->render(
+            "idea/detail.html.twig",
+            [
+                "idea" => $idea
+            ]
+        );
+    }
+
+
+    /**
+     * @Route("/list_recent", name="list_recent")
+     */
+    public function listRecent(EntityManagerInterface $em, $orderParam = 'id')
+    {
+        $ideas = $em->getRepository(Idea::class)
+            ->findRecent();
+        //    ->findBy(['isPublished' => true], [$orderParam => 'ASC']);
+
+
+        return $this->render(
+            "idea/list.html.twig",
+            [
+                "ideas" => $ideas
+            ]
+        );
+    }
 
     /**
      * @Route("/delete/{id}", name="delete")
@@ -61,58 +130,6 @@ class IdeaController extends AbstractController
             "idea/form.html.twig",
             [
                 "ideaForm" => $form->createView()
-            ]
-        );
-    }
-
-    /**
-     * @Route("/detail/{id}", name="detail")
-     */
-    public function detail($id = null, EntityManagerInterface $em)
-    {
-        $idea = $em->getRepository(Idea::class)->find($id);
-
-        return $this->render(
-            "idea/detail.html.twig",
-            [
-                "idea" => $idea
-            ]
-        );
-    }
-
-    /**
-     * @Route("/list/by/{orderParam}", name="list_ordered")
-     * @Route("/list", name="list")
-     */
-    public function list(EntityManagerInterface $em, Request $request, $orderParam = 'id')
-    {
-        $search = $request->get('search');
-
-        $ideas = $em->getRepository(Idea::class)->search($search, $orderParam);
-        //$ideas = $em->getRepository(Idea::class)->findBy(['isPublished' => true], [$orderParam => 'ASC']);
-
-        return $this->render(
-            "idea/list.html.twig",
-            [
-                "ideas" => $ideas
-            ]
-        );
-    }
-
-    /**
-     * @Route("/list_recent", name="list_recent")
-     */
-    public function listRecent(EntityManagerInterface $em, $orderParam = 'id')
-    {
-        $ideas = $em->getRepository(Idea::class)
-            ->findRecent();
-        //    ->findBy(['isPublished' => true], [$orderParam => 'ASC']);
-
-
-        return $this->render(
-            "idea/list.html.twig",
-            [
-                "ideas" => $ideas
             ]
         );
     }

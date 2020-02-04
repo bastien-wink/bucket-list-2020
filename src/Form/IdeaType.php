@@ -16,6 +16,7 @@ class IdeaType extends AbstractType
         $builder
             ->add('title', null, ['label'=>'Super Wish :)', 'attr'=>['class'=>'color-pink']])
             ->add('description')
+            ->add('category')
             ->add('author')
             ->add('dateDeadline', DateType::class, [
                 'widget' => 'single_text',

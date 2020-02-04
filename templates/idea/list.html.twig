@@ -10,6 +10,7 @@
     <table class="table table-striped">
         <tr>
             <th><a href="{{ path('list_ordered', {'orderParam': 'title'}) }}">Titre</a></th>
+            <th>Categorie</th>
             <th><a href="{{ path('list_ordered', {'orderParam': 'dateCreated'}) }}">Crée le</a></th>
             <th></th>
         </tr>
@@ -17,6 +18,10 @@
             <tr>
                 <td>
                     <a href="{{ path('detail', {'id':idea.id}) }}">{{ idea.title }}</a>
+                </td>
+                <td>
+                    {{ idea.category.name }}
+                    {#{{ idea.getCategory().getName() }}#}
                 </td>
                 <td>
                     {# https://twig.symfony.com/doc/2.x/functions/date.html #}

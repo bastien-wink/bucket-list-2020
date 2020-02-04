@@ -27,11 +27,6 @@ class Idea
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $author;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isPublished;
@@ -45,6 +40,16 @@ class Idea
      * @ORM\Column(type="date", nullable=false, options={"default"= "2020-12-31"})
      */
     private $dateDeadline;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="ideas")
+     */
+    private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="ideas")
+     */
+    private $author;
 
     public function getId(): ?int
     {
@@ -75,11 +80,6 @@ class Idea
         return $this;
     }
 
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
     public function getIsPublished(): ?bool
     {
         return $this->isPublished;
@@ -104,21 +104,41 @@ class Idea
         return $this;
     }
 
-    public function setAuthor($author): Idea
-    {
-        $this->author = $author;
-        return $this;
-    }
-
     public function getDateDeadline(): ?\DateTimeInterface
     {
         return $this->dateDeadline;
     }
 
-    public function setDateDeadline(?\DateTimeInterface $dateDeadline): self
+    public function setDateDeadline(\DateTimeInterface $dateDeadline): self
     {
         $this->dateDeadline = $dateDeadline;
 
         return $this;
     }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+
 }

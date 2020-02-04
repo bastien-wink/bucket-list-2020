@@ -79,6 +79,18 @@ class Book
         return $this;
     }
 
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
     public function getAuthor(): ?string
     {
         return $this->author;
@@ -115,73 +127,40 @@ class Book
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param mixed $language
-     */
-    public function setLanguage($language): void
-    {
-        $this->language = $language;
-    }
-
-    /**
-     * @param mixed $product
-     * @return Book
-     */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getProduct()
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    /**
-     * @param mixed $library
-     * @return Book
-     */
-    public function setLibrary($library)
+    public function setProduct(?Product $product): self
     {
-        $this->library = $library;
+        $this->product = $product;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLibrary()
+    public function getLibrary(): ?Library
     {
         return $this->library;
     }
 
-    /**
-     * @param mixed $categories
-     * @return Book
-     */
-    public function setCategories($categories)
+    public function setLibrary(?Library $library): self
     {
-        $this->categories = $categories;
+        $this->library = $library;
+
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCategories()
+    public function getCategories(): ?Category
     {
         return $this->categories;
     }
+
+    public function setCategories(?Category $categories): self
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
 }
