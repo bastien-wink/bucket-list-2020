@@ -14,7 +14,7 @@
                     {#<button type="submit">X</button>#}
                 {#</form>#}
 
-                {{ category.name }} :
+                {{ category.name }} ({{ category.ideas.count }}) :
 
                 {% for idea in category.ideas %}
                     {{ idea.title }}.
