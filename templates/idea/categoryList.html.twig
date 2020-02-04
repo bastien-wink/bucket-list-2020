@@ -8,6 +8,12 @@
             <li>
                 <a href="{{ path('deleteCategory', {'id':category.id}) }}">X</a>
 
+                {# Autres possibilités (bonus) : #}
+                {#<button onclick="window.location={{ path('deleteCategory', {'id':category.id}) }}">X</button>#}
+                {#<form target="{{ path('deleteCategory', {'id':category.id}) }}">#}
+                    {#<button type="submit">X</button>#}
+                {#</form>#}
+
                 {{ category.name }} :
 
                 {% for idea in category.ideas %}
