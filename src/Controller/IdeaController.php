@@ -6,7 +6,9 @@ use App\Entity\Category;
 use App\Entity\Idea;
 use App\Form\IdeaType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,7 +20,11 @@ class IdeaController extends AbstractController
     /**
      * @Route("deleteCategory/{id}", name="deleteCategory")
      */
-    function deleteCategory($id, EntityManagerInterface $em){
+    public function deleteCategory($id, EntityManagerInterface $em)
+    {
+        $connectedUser = $this->getUser();
+
+
         $category = $em->getRepository(Category::class)->find($id);
 
         $this->addFlash("success", "Categorie ".$category->getName()." supprimé");
@@ -36,6 +42,13 @@ class IdeaController extends AbstractController
      */
     public function categoryList(EntityManagerInterface $em, Request $request)
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash("danger", "NOOOOOOOOOOOOOOOON");
+
+            return $this->redirectToRoute('list');
+        }
+
+
         $categories = $em->getRepository(Category::class)->findBy([], ['name' => 'ASC']);
 
         return $this->render(
@@ -114,10 +127,10 @@ class IdeaController extends AbstractController
 
     /**
      * @Route("/form/{id}", name="form")
+     * @IsGranted("IS_AUTHENTICATED_FULLY");
      */
     public function form($id = null, EntityManagerInterface $em, Request $request)
     {
-
         if ($id == null) {
             $idea = new Idea();
         } else {
@@ -128,10 +141,13 @@ class IdeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($id == null) {
                 $idea->setDateCreated(new \DateTime());
-                $em->persist();
+
+                $currentUser = $this->getUser();
+                $idea->setAuthor($currentUser);
+
+                $em->persist($idea);
                 $this->addFlash('success', 'Idea Created');
             } else {
                 $this->addFlash('success', 'Idea Updated');

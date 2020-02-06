@@ -20,6 +20,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
     private $email;
 
     /**
@@ -32,6 +37,12 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Idea", mappedBy="author")
+     */
+    private $ideas;
+
 
     public function getId(): ?int
     {
@@ -57,7 +68,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -109,5 +120,12 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 }

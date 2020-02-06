@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{{  }}
+
 {% block body %}
     <h3>Idea list :</h3>
 
@@ -18,6 +20,11 @@
             <tr>
                 <td>
                     <a href="{{ path('detail', {'id':idea.id}) }}">{{ idea.title }}</a>
+
+                    {% if idea.author %}
+                        ({{ idea.author.username }})
+                    {% endif %}
+
                 </td>
                 <td>
                     {% if idea.category is not null %}

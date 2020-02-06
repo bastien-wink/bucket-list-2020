@@ -1,39 +1,60 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
 
-        <!-- Copied from https://getbootstrap.com/docs/4.3/getting-started/introduction -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script
-                src="https://code.jquery.com/jquery-3.4.1.min.js"
-                integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Copied from https://getbootstrap.com/docs/4.3/getting-started/introduction -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" href="{{ asset("css/main.css") }}"/>
-    </head>
-    <body>
+    <link rel="stylesheet" href="{{ asset("css/main.css") }}"/>
+</head>
+<body>
 
-        <lu class="list-group list-group-horizontal justify-content-center">
-            <li class="list-group-item"><a href="{{ path('main') }}">Main page</a></li>
-            <li class="list-group-item"><a href="{{ path('faq') }}">FAQ page</a></li>
-            <li class="list-group-item"><a href="{{ path('list') }}">Idea list</a></li>
-            <li class="list-group-item"><a href="{{ path('categoryList') }}">Categorie list</a></li>
-            <li class="list-group-item"><a href="{{ path('form') }}">New Idea</a></li>
-            <li class="list-group-item"><a href="{{ path('registration') }}">Registration</a></li>
-        </lu>
+<lu class="list-group list-group-horizontal justify-content-center">
+    <li class="list-group-item"><a href="{{ path('main') }}">Main page</a></li>
+    <li class="list-group-item"><a href="{{ path('faq') }}">FAQ page</a></li>
+    <li class="list-group-item"><a href="{{ path('list') }}">Idea list</a></li>
 
-        {# Affichage des Flashes #}
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div>{{ label }} : {{ message }}</div>
-            {% endfor %}
-        {% endfor %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <li class="list-group-item"><a href="{{ path('categoryList') }}">Categorie list</a></li>
+    {% endif %}
 
-        {% block body %}{% endblock %}
-    </body>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li class="list-group-item"><a href="{{ path('form') }}">New Idea</a></li>
+    {% endif %}
+
+    <li class="list-group-item"><a href="{{ path('registration') }}">Registration</a></li>
+</lu>
+
+{# Affiche l'utilisateur connecté #}
+<div class="text-center">
+    {% if app.user %}
+        {{ app.user.username }} : <a href="{{ path('app_logout') }}">Logout</a>
+    {% else %}
+        non connecté : <a href="{{ path('app_login') }}">Login</a>
+    {% endif %}
+</div>
+
+{# Affichage des Flashes #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div>{{ label }} : {{ message }}</div>
+    {% endfor %}
+{% endfor %}
+
+{% block body %}{% endblock %}
+</body>
 </html>
